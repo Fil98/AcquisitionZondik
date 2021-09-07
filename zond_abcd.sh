@@ -1,15 +1,21 @@
 #!/bin/bash
-$date=`date "+%d%m%y"`
-path1=/home/meteo/data/printed/$date
-#cd $path
-path=/home/meteo/zond/
+
+#Формирование зондов
+#Description: Формирование зондов
+#Ilya Filimonov (c) 2021
+#admin.cks@sevmeteo.ru
+#filimonov@arh.mecom.ru
+
+
+#$date=`date "+%d%m%y"`
+path1=/home/meteo/data/printed/"$(date "+%d%m%y")"
+path=/home/meteo/zond
 zond=/home/meteo/zond/zond_R
-#cd $path1
 cd $path1
-grep --null -l -i "USRS13 RUMS" * | xargs -0 cat > $path/zond_A 
+grep --null -l -i "USRS13 RUMS" * | xargs -0 cat > $path/zond_A
 grep --null -l -i "UKRS13 RUMS" * | xargs -0 cat > $path/zond_B
-cat $path/zond_B >> $path/zond_A 
-grep --null -l -i "USRA15 RUAA" * | xargs -0 cat > $path/zond_C 
+cat $path/zond_B >> $path/zond_A
+grep --null -l -i "USRA15 RUAA" * | xargs -0 cat > $path/zond_C
 grep --null -l -i "UKRA15 RUAA" * | xargs -0 cat > $path/zond_D
 cat $path/zond_D >> $path/zond_C
 cat $path/zond_C >> $path/zond_A
@@ -50,8 +56,8 @@ grep -v '^...$' zond_P > zond_R
 sed -i '/NNNNZCZC/ d' $zond
 sed -i '/ZCZC/ d' $zond
 sed -i '/NNNN/ d' $zond
-mail -s `date +%d%m` aero@arh.mecom.ru < zond_R
-mail -s `date +%d%m` sbor@arh.mecom.ru < zond_R
+#mail -s `date +%d%m` aero@arh.mecom.ru < zond_R
+#mail -s `date +%d%m` sbor@arh.mecom.ru < zond_R
 cp zond_R /usr/meteo/aero/`date +%d`
 #sed -i '/^$/d' $zond
-rm $path/zond_*
+rm -rf $path/zond_*
